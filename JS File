@@ -1,0 +1,60 @@
+HTML:
+
+<body>
+<h1>ChatBot V.1</V></h1>
+
+  <h2>Directions: Input Answers to questions to log information about yourself! </h2>
+  <ul id="Answers">
+    <li class="fav-thing">Here are the answers to the questions!</li>
+    
+  </ul>
+
+  <form>
+    <input id="new-answer" />
+    <input id="new-answer-button" type="submit" value="Submit"></submit>
+  </form>
+</body>
+
+CSS:
+
+body {
+	background-color: #66b3ff;
+}
+
+h1, p {
+	font-family: sans-serif;
+	text-align: center;
+	color: #323330;
+	font-size:  60px;
+}
+
+JS:
+
+function addToList(list, newThing) {
+  var li = document.createElement("li");
+  var liText = document.createTextNode(newThing);
+  li.appendChild(liText);
+  list.appendChild(li);
+}
+
+window.onload = function() {
+
+  b = document.getElementById("new-answer-button");
+  b.addEventListener("click", function(event1){
+    event.preventDefault();
+    list = document.getElementById("new-list");
+    newThing = document.getElementById("new-answer");
+    newValue = newThing.value;
+
+    if(newValue == "") {
+      alert("Good Job! - Submit new answer to the next question");
+    } else {
+      addToList(list, newValue);
+      newThing.value = "";
+    }
+  });
+};
+
+
+
+
