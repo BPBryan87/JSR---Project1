@@ -1,0 +1,28 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chatbot</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <form id="chatForm">
+    <div id="chatbot">
+      <div id="chat">
+        <div class="header">
+         <center> <h1>Fight Club Chat Bot</span></h1></center>
+          <center> <IMG SRC="https://i.pinimg.com/736x/e2/a8/91/e2a8910bc7a3207bc7c61b5cac8084fe--fight-club--tyler-durden.jpg" ALT="Tyler Durden" WIDTH=150 HEIGHT=150></center>
+        </div>
+        <div class="chat-input">
+          <input id="chatInput" />
+        </div>
+        <div id="dave" class="chat-pane">        
+          <ul id="dave-list" style="list-style-type:none">
+            <li class="printer-output">Talk to Tyler...</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </form>
+  <script src="js/index.js"></script>
+</body>
+</html>
