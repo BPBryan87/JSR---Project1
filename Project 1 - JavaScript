@@ -1,0 +1,206 @@
+var consecutiveBlanks = -1;
+var printerOn = false;
+var greetings = 0;
+
+// Chat input options
+var userHello = ["hey", "hi", "hello", "Tyler?", "Hey Tyler"];
+var userGoodbye = ["peace", "cya", "bye", "cya", "goodbye"];
+var userOpenEndedQuestions = ["why", "who", "what", "where", "when"];
+
+// Tyler's Response
+var printerConfirm = ["Ok", "Okay.", "So......", "Now....."];
+var classmates = ["Bailey", "Idk", "Bryan", "Carolyn", "Courtney", "Derek","Elaine", "Ellen", "Emily", "Joe", "Joe W", "Kenneth", "Liana",
+"Mark K", "Rebecca", "Richard", "Sonyl", "David", "Morris"];
+var printItems = ["barber.", "neighbor.", "banker.", 
+                  "bus driver.", "accountant.", "General Assembly instructor." ];
+var printerWarnings = ["Type in another name.", "Be careful.", "Stop.", "Stop!"];
+
+//Tyler's intial responses
+var printerGreetings = [
+  "Hey, type in a classmate\'s name.",
+  "Why do you wan\'t to join fight club?",
+  "Type in a member\'s name.",
+  "Who do you want to fight?",
+  "If you could fight anyone, who would it be?"
+ 
+];
+//Tyler's Random outputs
+var printerRandom = [
+    "Try Again. Dont confuse yourself.",
+  "If youre not ready for fightclub you can leave",
+  "Enough of the talking... are you in or not?",
+  "Do you know what Project Mayhem is?",
+  "If you wake up at a different time in a different place, could you wake up as a different person?",
+  "His name is Robert Paulson, His name is Robert Paulson, His name is Robert Paulson",
+  "Its only after weve lost everything that we\'re free to do anything.",
+  "Tonight... We make soap.",
+  "Welcome to Fight Club. The first rule of Fight Club is: you do not talk about Fight Club. The second rule of Fight Club is you DO NOT talk about Fight Club. Third rule of Fight Club. someone yells stop, goes limp, taps out, the fight is over. Fourth rule. only two guys to a fight. Fifth rule: one fight at a time, fellas. Sixth rule. No shirts, no shoes. Seventh rule. fights will go on as long as they have to. And the eighth and final rule. if this is your first time at Fight Club, you have to fight.",
+    "You know why they put oxygen masks on planes?",
+    "On a long enough timeline, the survival rate for everyone drops to zero.",
+    "You wanna make an omelet, you gotta break some eggs. ",
+    "People do it everyday, they talk to themselves... they see themselves as they'd like to be, they don't have the courage you have, to just run with it.",
+    "Shut up. Which means a lot of you have been breaking the first two rules of Fight Club. ",
+    "I'll bring us through this. As always. I'll carry you - kicking and screaming - and in the end you'll thank me. ",
+    "No, you're insane. ",
+    "Fight Club was the beginning, now it's moved out of the basement, it's called Project Mayhem. ",
+    "Life insurance pays off triple if you die on a business trip."
+  
+];
+var printCommon = ["Ask Again.", "Try Again, you can ask anything.", "Type in a name."];
+var printQuestionAnswers = ["Yes.", "No.", "Maybe.", "Definitely."];
+var printerGoodbye = [
+  "Want to leave? Ok.",
+  "Go ahead and leave.",
+  "See ya later.",
+  "Cheers.",
+  "Don't go yet."
+];
+
+// function list to return criteria of outputs along with random responses
+function createPrintStatement(){
+  var affirm = printerConfirm[randomInt(printerConfirm.length)];
+  var name = classmates[randomInt(classmates.length)];
+  var num = randomInt(10);
+  var printjob = printItems[randomInt(printItems.length)];
+  var result = affirm + " You need to go start  " + num + " of fights with " + name + "'s " + printjob;
+  return result;
+  }
+
+function reformatQuestion(question){
+  var newQuestion = question.replace(/\sisn't\s/, " is ");
+  if(newQuestion == question){
+    newQuestion = question.replace(/\sis\s/, " isn't ");
+  }
+  if(newQuestion == question){
+    newQuestion = question.replace(/\sare\s/, " aren't ");
+  }
+  
+  if(newQuestion == question){
+    newQuestion = question.replace(/\saren't\s/, " are ");
+  }
+  return newQuestion;            
+}
+
+function randomInt(int) {
+  return Math.floor(Math.random() * int);
+}
+
+function createRegex(array){  
+  array = array.map(function(element) {
+    element = "(" + element + ")";
+    return element;
+  });
+  
+  return new RegExp(array.join("|"));
+}
+
+function contains(string, array){
+  var regex = createRegex(array);
+  return (string.toLowerCase() != string.toLowerCase().replace(regex,""));
+}
+
+function createResponse(prompt) {
+
+  var isGreeting = contains(prompt, userHello);
+  var isGoodbye = contains(prompt, userGoodbye);
+  
+  if(prompt.toLowerCase()=="off"){
+        if (printerOn) {
+          printerOn = false;
+          return ("");
+      }
+  }
+
+  if(isGreeting){
+    
+    if(greetings < 3){
+      greetings ++;
+      return printerGreetings[randomInt(printerGreetings.length)];
+    }else{
+      return "Ok?";
+    }
+  }
+  
+  if(isGoodbye){
+    greetings = 0;
+    return printerGoodbye[randomInt(printerGoodbye.length)];       
+  }
+  
+  if(prompt.endsWith("?")){
+    greetings = 0;
+    var openEnded = contains(prompt, userOpenEndedQuestions);
+    if(openEnded){
+      return "I don't know... " + reformatQuestion(prompt);
+    }else{
+      return printQuestionAnswers[randomInt(printQuestionAnswers.length)];       
+    }
+  }
+  
+  if(contains(prompt, ["my"])){
+    return "No. " + prompt.replace(/(my)|(My)/, "MY");
+  }
+  
+  var ran = randomInt(100);
+  if(ran < 40){
+    return createPrintStatement();
+  }
+  if(ran >= 40 && ran < 70){
+    return printerRandom[randomInt(printerRandom.length)];
+  }
+  
+  return printCommon[randomInt(printerCommon.length)];
+  
+}
+
+function addToList(list, newThing, itemClass){
+  if (newThing === undefined) {
+    newThing = "Try again";
+  }
+  var li = document.createElement("li");
+  li.className = itemClass;
+  var liText = document.createTextNode(newThing);
+  li.appendChild(liText);
+  list.appendChild(li);
+  
+  var lis = document.querySelectorAll('#dave-list li');
+  if(lis.length > 20){
+    list.removeChild(lis[0]);
+  }
+}
+
+window.onload = function() {
+  // when someone clicks the button...
+  chatInput = document.getElementById("chatInput");
+  chatInput.addEventListener("keypress", function(event) {
+                             
+    if (event.keyCode == 13) {
+      
+      event.preventDefault();
+      input = document.getElementById("chatInput").value.trim();
+      list = document.getElementById("dave-list");
+
+      addToList(list, input, "user-output");
+
+      if (!printerOn) {
+        addToList(document.getElementById("dave-list"), "");
+        printerOn = true;
+      }
+
+      if (input === "") {
+        consecutiveBlanks++;
+        addToList(
+          document.getElementById("dave-list"),
+          printerWarnings[consecutiveBlanks],
+          "printer-output"
+        );
+      } else {
+        consecutiveBlanks = -1;
+        addToList(
+          document.getElementById("dave-list"), 
+          createResponse(input),
+          "printer-output");
+        document.getElementById("chatInput").value = "";
+      }
+    }
+  });
+};
